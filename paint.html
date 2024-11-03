@@ -34,6 +34,7 @@
         <input type="color" id="colorPicker" value="#000000"> <!-- Default color black -->
         <button id="brushBtn">Brush</button>
         <button id="eraserBtn">Eraser</button>
+        <button id="saveBtn">Save</button> <!-- Save button -->
     </div>
     <canvas id="paintCanvas" width="800" height="600"></canvas>
     <script>
@@ -110,6 +111,14 @@
         canvas.addEventListener('touchend', () => {
             isDrawing = false;
             ctx.beginPath();
+        });
+
+        // Save button functionality
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'canvas_image.png'; // Set the filename for the downloaded image
+            link.href = canvas.toDataURL('image/png'); // Convert canvas to image data URL
+            link.click(); // Trigger the download
         });
     </script>
 </body>
