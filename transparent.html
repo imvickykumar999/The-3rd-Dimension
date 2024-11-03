@@ -91,19 +91,29 @@
   let mouseX = 0;
   let mouseY = 0;
 
-  // Update mouse position on mousemove
+  // Function to update rotation based on mouse or touch input
+  function updateRotation(x, y) {
+    const rotateY = x * 360; // Rotate based on horizontal input
+    const rotateX = -y * 360; // Rotate based on vertical input
+    cube.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+  }
+
+  // Mouse movement control
   document.addEventListener('mousemove', (event) => {
-    // Normalize mouse position
     mouseX = (event.clientX / window.innerWidth) - 0.5; // Normalize to -0.5 to 0.5
     mouseY = (event.clientY / window.innerHeight) - 0.5; // Normalize to -0.5 to 0.5
-
-    // Calculate rotation based on mouse position
-    const rotateY = mouseX * 360; // Rotate based on horizontal mouse movement
-    const rotateX = -mouseY * 360; // Rotate based on vertical mouse movement
-
-    // Apply rotation to the cube
-    cube.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+    updateRotation(mouseX, mouseY);
   });
+
+  // Touch control
+  document.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0]; // Get the first touch point
+    mouseX = (touch.clientX / window.innerWidth) - 0.5; // Normalize to -0.5 to 0.5
+    mouseY = (touch.clientY / window.innerHeight) - 0.5; // Normalize to -0.5 to 0.5
+    updateRotation(mouseX, mouseY);
+    event.preventDefault(); // Prevent default scrolling behavior
+  }, { passive: false }); // Set passive to false to allow preventDefault
+
 </script>
 
 </body>
