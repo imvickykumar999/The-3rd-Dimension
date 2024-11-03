@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paint Website</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            border: 1px solid #000;
+            touch-action: none; /* Prevent touch scrolling on canvas */
+            background-color: #fff; /* Canvas background color */
+        }
+        .tools {
+            margin: 10px;
+        }
+        button {
+            margin: 0 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="tools">
+        <input type="color" id="colorPicker" value="#000000"> <!-- Default color black -->
+        <button id="brushBtn">Brush</button>
+        <button id="eraserBtn">Eraser</button>
+    </div>
+    <canvas id="paintCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        let mouseX = 0;
+        let mouseY = 0;
+        let isDrawing = false;
+        let isErasing = false;
+
+        // Set initial brush settings
+        ctx.lineWidth = 5; // Default brush size
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000'; // Default brush color
+
+        // Brush and Eraser buttons
+        document.getElementById('brushBtn').addEventListener('click', () => {
+            isErasing = false;
+            ctx.strokeStyle = document.getElementById('colorPicker').value; // Set brush color to selected color
+            ctx.lineWidth = 5; // Reset brush size
+        });
+
+        document.getElementById('eraserBtn').addEventListener('click', () => {
+            isErasing = true;
+            ctx.strokeStyle = '#ffffff'; // Set eraser color to pure white
+            ctx.lineWidth = 20; // Set larger radius for eraser
+        });
+
+        // Change brush color when color is selected
+        document.getElementById('colorPicker').addEventListener('input', (event) => {
+            if (!isErasing) { // Change color only if brush is selected
+                ctx.strokeStyle = event.target.value;
+            }
+        });
+
+        // Drawing function
+        function draw(x, y) {
+            if (!isDrawing) return;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        // Mouse movement control
+        canvas.addEventListener('mousedown', (event) => {
+            isDrawing = true;
+            draw(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        });
+
+        canvas.addEventListener('mousemove', (event) => {
+            draw(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.beginPath();
+        });
+
+        // Touch control
+        canvas.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            isDrawing = true;
+            const touch = event.touches[0];
+            draw(touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop);
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (event) => {
+            event.preventDefault();
+            const touch = event.touches[0];
+            draw(touch.clientX - canvas.offsetLeft, touch.clientY - canvas.offsetTop);
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', () => {
+            isDrawing = false;
+            ctx.beginPath();
+        });
+    </script>
+</body>
+</html>

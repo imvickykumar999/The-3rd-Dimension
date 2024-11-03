@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Rotating Cube</title>
+<title>3D Rotating Cube with Drawing Effect</title>
 <style>
   /* Center cube on the screen */
   body {
@@ -14,6 +14,7 @@
     margin: 0;
     background-color: #f0f0f0;
     overflow: hidden;
+    position: relative;
   }
 
   /* Container for 3D cube */
@@ -71,6 +72,17 @@
     background-color: rgba(51, 153, 255, 0.5); /* Adjust transparency */
     transform: translateY(150px) rotateX(-90deg);
   }
+
+  /* Drawing trail style */
+  .trail {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red; /* Color of the drawing trail */
+    border-radius: 50%; /* Make it circular */
+    pointer-events: none; /* Ignore mouse/touch events */
+    transition: opacity 1s; /* Smooth fade-out */
+  }
 </style>
 </head>
 <body>
@@ -98,11 +110,29 @@
     cube.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
   }
 
+  // Function to create and remove trail
+  function createTrail(x, y) {
+    const trail = document.createElement('div');
+    trail.className = 'trail';
+    trail.style.left = `${x - 5}px`; // Center trail on cursor/touch point
+    trail.style.top = `${y - 5}px`; // Center trail on cursor/touch point
+    document.body.appendChild(trail);
+
+    // Fade out and remove trail after 1 second
+    setTimeout(() => {
+      trail.style.opacity = '0';
+      setTimeout(() => {
+        document.body.removeChild(trail);
+      }, 1000); // Wait for fade-out before removing
+    }, 10); // Slight delay before starting fade-out
+  }
+
   // Mouse movement control
   document.addEventListener('mousemove', (event) => {
     mouseX = (event.clientX / window.innerWidth) - 0.5; // Normalize to -0.5 to 0.5
     mouseY = (event.clientY / window.innerHeight) - 0.5; // Normalize to -0.5 to 0.5
     updateRotation(mouseX, mouseY);
+    createTrail(event.clientX, event.clientY); // Create trail on mouse move
   });
 
   // Touch control
@@ -111,6 +141,7 @@
     mouseX = (touch.clientX / window.innerWidth) - 0.5; // Normalize to -0.5 to 0.5
     mouseY = (touch.clientY / window.innerHeight) - 0.5; // Normalize to -0.5 to 0.5
     updateRotation(mouseX, mouseY);
+    createTrail(touch.clientX, touch.clientY); // Create trail on touch move
     event.preventDefault(); // Prevent default scrolling behavior
   }, { passive: false }); // Set passive to false to allow preventDefault
 
