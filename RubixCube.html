@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Rotating Rubik's Cube</title>
+<style>
+  /* Center cube on the screen */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    overflow: hidden;
+  }
+
+  /* Container for 3D cube */
+  .cube-container {
+    perspective: 1200px;
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Cube setup */
+  .cube {
+    transform-style: preserve-3d;
+    position: relative;
+    width: 300px;
+    height: 300px;
+    animation: rotate-cube 10s infinite linear;
+  }
+
+  /* Cube side setup */
+  .side {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border: 2px solid black;
+  }
+
+  /* Rubik's Cube cells */
+  .cell {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+  }
+
+  /* Individual side colors and positioning */
+  .front {
+    transform: translateZ(150px);
+    background-color: black;
+  }
+  .back {
+    transform: translateZ(-150px) rotateY(180deg);
+    background-color: black;
+  }
+  .right {
+    transform: translateX(150px) rotateY(90deg);
+    background-color: black;
+  }
+  .left {
+    transform: translateX(-150px) rotateY(-90deg);
+    background-color: black;
+  }
+  .top {
+    transform: translateY(-150px) rotateX(90deg);
+    background-color: black;
+  }
+  .bottom {
+    transform: translateY(150px) rotateX(-90deg);
+    background-color: black;
+  }
+
+  /* Color cells for each face */
+  .front .cell:nth-child(1), .front .cell:nth-child(2), .front .cell:nth-child(3),
+  .front .cell:nth-child(4), .front .cell:nth-child(5), .front .cell:nth-child(6),
+  .front .cell:nth-child(7), .front .cell:nth-child(8), .front .cell:nth-child(9) {
+    background-color: red;
+  }
+
+  .back .cell:nth-child(1), .back .cell:nth-child(2), .back .cell:nth-child(3),
+  .back .cell:nth-child(4), .back .cell:nth-child(5), .back .cell:nth-child(6),
+  .back .cell:nth-child(7), .back .cell:nth-child(8), .back .cell:nth-child(9) {
+    background-color: orange;
+  }
+
+  .right .cell:nth-child(1), .right .cell:nth-child(2), .right .cell:nth-child(3),
+  .right .cell:nth-child(4), .right .cell:nth-child(5), .right .cell:nth-child(6),
+  .right .cell:nth-child(7), .right .cell:nth-child(8), .right .cell:nth-child(9) {
+    background-color: yellow;
+  }
+
+  .left .cell:nth-child(1), .left .cell:nth-child(2), .left .cell:nth-child(3),
+  .left .cell:nth-child(4), .left .cell:nth-child(5), .left .cell:nth-child(6),
+  .left .cell:nth-child(7), .left .cell:nth-child(8), .left .cell:nth-child(9) {
+    background-color: white;
+  }
+
+  .top .cell:nth-child(1), .top .cell:nth-child(2), .top .cell:nth-child(3),
+  .top .cell:nth-child(4), .top .cell:nth-child(5), .top .cell:nth-child(6),
+  .top .cell:nth-child(7), .top .cell:nth-child(8), .top .cell:nth-child(9) {
+    background-color: blue;
+  }
+
+  .bottom .cell:nth-child(1), .bottom .cell:nth-child(2), .bottom .cell:nth-child(3),
+  .bottom .cell:nth-child(4), .bottom .cell:nth-child(5), .bottom .cell:nth-child(6),
+  .bottom .cell:nth-child(7), .bottom .cell:nth-child(8), .bottom .cell:nth-child(9) {
+    background-color: green;
+  }
+
+  /* Keyframes for rotating the cube */
+  @keyframes rotate-cube {
+    0% {
+      transform: rotateX(45deg) rotateY(45deg);
+    }
+    25% {
+      transform: rotateX(-45deg) rotateY(45deg);
+    }
+    50% {
+      transform: rotateX(-45deg) rotateY(-45deg);
+    }
+    75% {
+      transform: rotateX(45deg) rotateY(-45deg);
+    }
+    100% {
+      transform: rotateX(45deg) rotateY(45deg);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="cube-container">
+  <div class="cube">
+    <div class="side front">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+    <div class="side back">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+    <div class="side right">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+    <div class="side left">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+    <div class="side top">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+    <div class="side bottom">
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
